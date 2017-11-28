@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2015, Alcatel-Lucent Inc
+# Copyright (c) 2017, Nokia
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -25,22 +25,26 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from setuptools import setup, find_packages
+from __future__ import unicode_literals
+from builtins import object
+import os
+import shutil
 
-setup(
-    name="monolithe",
-    packages=find_packages(exclude=["*tests*"]),
-    include_package_data=True,
-    version="1.5.0",
-    description="Monolithe is a sdk generator",
-    author="Nuage Networks",
-    author_email="opensource@nuagnetworks.net",
-    url="https://github.com/nuagenetworks/monolithe",
-    classifiers=[],
-    install_requires=[line for line in open("requirements.txt")],
-    entry_points={
-        "console_scripts": [
-            "monogen = monolithe.cli:main"
-        ]
-    }
-)
+
+class VanillaWriter(object):
+    """
+    """
+    def __init__(self, monolithe_config, output_path):
+        """
+        """
+        self.monolithe_config = monolithe_config
+        self.output_path = output_path
+
+    def perform(self):
+        """
+        """
+        if os.path.exists(self.output_path):
+            shutil.rmtree(self.output_path)
+
+        system_vanilla_path = os.path.join(os.path.dirname(__file__), "../vanilla")
+        shutil.copytree(system_vanilla_path, self.output_path)

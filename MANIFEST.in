@@ -16,3 +16,5 @@ recursive-include monolithe/generators/lang/javascript/config/ *
 recursive-include monolithe/generators/lang/javascript/templates *
 recursive-include monolithe/generators/lang/csharp/templates *
 recursive-include monolithe/generators/lang/csharp/vanilla *
+recursive-include monolithe/generators/lang/vsdsim/templates *
+recursive-include monolithe/generators/lang/vsdsim/vanilla *

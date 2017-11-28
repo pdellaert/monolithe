@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2015, Alcatel-Lucent Inc
+# Copyright (c) 2017, Nokia
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -25,22 +25,54 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from setuptools import setup, find_packages
+import re
 
-setup(
-    name="monolithe",
-    packages=find_packages(exclude=["*tests*"]),
-    include_package_data=True,
-    version="1.5.0",
-    description="Monolithe is a sdk generator",
-    author="Nuage Networks",
-    author_email="opensource@nuagnetworks.net",
-    url="https://github.com/nuagenetworks/monolithe",
-    classifiers=[],
-    install_requires=[line for line in open("requirements.txt")],
-    entry_points={
-        "console_scripts": [
-            "monogen = monolithe.cli:main"
-        ]
+
+def _string_clean(string):
+    """
+    """
+    rep = {
+        "IPID": "IpID",
+        "VCenter": "Vcenter",
+        "vCenter": "Vcenter",
+        "VPort": "Vport",
+        "IPv6": "Ipv6",
+        "IPv4": "Ipv4"
     }
-)
+
+    rep = dict((re.escape(k), v) for k, v in rep.items())
+    pattern = re.compile("|".join(list(rep.keys())))
+
+    return pattern.sub(lambda m: rep[re.escape(m.group(0))], string)
+
+
+def get_idiomatic_name(name):
+    """
+    """
+    first_cap_re = re.compile("(.)([A-Z](?!s([A-Z])*)[a-z]+)")
+    all_cap_re = re.compile("([a-z0-9])([A-Z])")
+
+    s1 = first_cap_re.sub(r"\1_\2", _string_clean(name))
+
+    return all_cap_re.sub(r"\1_\2", s1).lower()
+
+
+def get_type_name(type_name, sub_type=None):
+    """
+    """
+    if type_name in ("string", "enum"):
+        return "str"
+
+    if type_name == "boolean":
+        return "bool"
+
+    if type_name == "integer":
+        return "int"
+
+    if type_name == "time":
+        return "float"
+
+    if type_name == "object":
+        return "dict"
+
+    return type_name
