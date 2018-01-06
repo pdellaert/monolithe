@@ -1,4 +1,5 @@
 include *.txt
 include README.md
 include LICENSE
-sample/config.ini
+include sample/*
+include conf/*
