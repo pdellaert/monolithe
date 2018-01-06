@@ -29,6 +29,9 @@ class NuageVSDSim(object):
         parser.add_argument('-c', '--config-file', required=False,
                             help='Configuration file to use, if not specified ~/.nuage-vsd-sim/config.ini is used, it that does not exist, /etc/nuage-vsd-sim/config.ini is used.',
                             dest='config_file', type=str)
+        parser.add_argument('-p', '--port', required=False, help='Port to listen on', dest='port', type=int, default=5000)
+        parser.add_argument('-l', '--log-level', required=False, help='Loglevel, supported values are DEBUG, INFO, WARNING, ERROR, CRITICAL.', dest='log_level', type=str, 
+                            choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'], default='WARNING')
         args, command_args = parser.parse_known_args()
 
         # Handling configuration file
@@ -43,7 +46,7 @@ class NuageVSDSim(object):
             cfg.add_section('LOG')
             cfg.set('LOG', 'directory', '')
             cfg.set('LOG', 'file', '')
-            cfg.set('LOG', 'level', 'DEBUG')
+            cfg.set('LOG', 'level', args.log_level)
 
         # Handling logging
         log_dir = cfg.get('LOG', 'directory')
@@ -86,7 +89,7 @@ class NuageVSDSim(object):
         )
         {% endfor %}
 
-        self.app.run(host='0.0.0.0', port=5000, debug=(log_level == 'DEBUG'))
+        self.app.run(host='0.0.0.0', port=args.port, debug=(log_level == 'DEBUG'))
 
 
 def main():
