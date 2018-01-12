@@ -14,7 +14,7 @@ setup(
     author='{{ author }}',
     author_email='{{ email }}',
     license='{{ license }}',
-    classifiers=(
+    classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Information Technology',
@@ -28,7 +28,7 @@ setup(
         'Topic :: System :: Networking',
         'Topic :: System :: Systems Administration',
         'Topic :: Utilities'
-    ),
+    ],
     keywords='{{ description }}',
     packages=[
         '{{ name }}',
@@ -36,7 +36,7 @@ setup(
         '{{ name }}.simentities',
     ],
     install_requires=[
-        'vspk',
+        'vspk=={{ version }}',
         'flask-restful'
     ],
     python_requires='>=2.6, <3',
